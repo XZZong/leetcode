@@ -1,0 +1,19 @@
+class Solution(object):
+    def rob(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        if len(nums) == 0:
+            return 0
+        if len(nums) == 1:
+            return nums[0]
+        arr = []
+        for i in range(0, len(nums)):
+            temp = nums[i]
+            if i > 1:
+                temp = nums[i] + arr[i - 2]
+            if i > 2:
+                temp = max(temp, nums[i] + arr[i - 3])
+            arr.append(temp)
+        return max(arr[len(nums) - 2], arr[len(nums) - 1]) 
