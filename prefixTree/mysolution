@@ -1,0 +1,94 @@
+class Trie {
+    class Node {
+        char value;
+        List<Node> neighbor;
+        
+        public Node(char c) {
+            this.value = c;
+            this.neighbor = new ArrayList<>();
+        }
+    }
+    List<Node> tree;
+    /** Initialize your data structure here. */
+    public Trie() {
+        this.tree = new ArrayList<>();
+    }
+    
+    /** Inserts a word into the trie. */
+    public void insert(String word) {
+        word += "#";
+        List<Node> area = this.tree;
+        boolean flag = true;
+        int i = 0;
+        while (i < word.length()) {
+            char c = word.charAt(i);
+            for (Node node : area) {
+                if (node.value == c) {
+                    area = node.neighbor;
+                    flag = false;
+                    break;
+                }
+            }
+            if (flag) {
+                Node node = new Node(c);
+                area.add(node);
+                area = node.neighbor;
+            }
+            i++;
+            flag = true;
+        }
+    }
+    
+    /** Returns if the word is in the trie. */
+    public boolean search(String word) {
+        word += "#";
+        List<Node> area = this.tree;
+        boolean flag = true;
+        int i = 0;
+        while (i < word.length()) {
+            char c = word.charAt(i);
+            for (Node node : area) {
+                if (node.value == c) {
+                    area = node.neighbor;
+                    flag = false;
+                    break;
+                }
+            }
+            if (flag)
+                return false;
+            i += 1;
+            flag = true;
+        }
+        return area.size() == 0 ? true:false;
+    }
+    
+    /** Returns if there is any word in the trie that starts with the given prefix. */
+    public boolean startsWith(String prefix) {
+        List<Node> area = this.tree;
+        boolean flag = true;
+        int i = 0;
+        while (i < prefix.length()) {
+            char c = prefix.charAt(i);
+            for (Node node : area) {
+                if (node.value == c) {
+                    area = node.neighbor;
+                    flag = false;
+                    break;
+                }
+            }
+            if (flag)
+                return false;
+            i += 1;
+            flag = true;
+        }
+        return true;
+    }
+}
+
+/**
+ * Your Trie object will be instantiated and called as such:
+ * Trie obj = new Trie();
+ * obj.insert(word);
+ * boolean param_2 = obj.search(word);
+ * boolean param_3 = obj.startsWith(prefix);
+ */
