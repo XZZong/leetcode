@@ -1,0 +1,72 @@
+public int calculate(String s) {
+    Stack<Integer> number = new Stack<>();
+    Stack<String> operation = new Stack<>();
+    operation.push("#");
+    int i = 0;
+    s = s + "#";
+    int length = s.length();
+    while (!operation.isEmpty()) {//
+        while (i < length && s.charAt(i) == ' ')
+            i++;
+        int num = 0;
+        char c = s.charAt(i);
+        boolean flag = false;
+        while (i < length && c >= '0' && c <= '9') {                
+            num = num * 10 + c - '0';            
+            i++;         
+            c = s.charAt(i);
+            flag = true;
+        }
+        if (flag) {
+            number.push(num);
+        }
+        // System.out.println(num);
+        while (i < length && s.charAt(i) == ' ')
+            i++;
+        String op1 = operation.peek();  //获取栈顶元素，而不将它出栈
+        String op2 = s.substring(i, i + 1);
+        // System.out.println(op1 + "   " + op2);
+        char result = compare(op1, op2);
+        if (result == '>') {
+            int numberB = number.pop();
+            int numberA = number.pop();
+            operation.pop();
+            int numberC = cal(numberA, numberB, op1);
+            number.push(numberC);
+        }
+        else if (result == '<'){
+            operation.push(op2); 
+            i += 1;
+        }
+        else {
+            operation.pop();
+            i += 1;
+        }
+    }
+    return number.pop();
+}
+
+public char compare(String op1, String op2) {
+    String[] allOp = {"#", "+", "-", "(", ")"};
+    List<String> all = Arrays.asList(allOp);
+    char[][] priority = { //横：栈顶元素 纵：新的运算符
+        {'=', '>', '>', '>', ' '},
+        {'<', '>', '>', '<', ' '},
+        {'<', '>', '>', '<', ' '},
+        {'<', '<', '<', '<', ' '},
+        {' ', '>', '>', '=', ' '}
+    };
+    int j = all.indexOf(op1);//返回数组下标
+    int i = all.indexOf(op2);
+    return priority[i][j];
+}
+
+public int cal(int numberA, int numberB, String op) {
+    switch(op) {
+        case "+":
+            return numberA + numberB;
+        case "-":
+            return numberA - numberB;
+    }
+    return 0;
+}
