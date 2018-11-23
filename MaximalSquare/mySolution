@@ -1,0 +1,36 @@
+class Solution {
+    public int maximalSquare(char[][] matrix) {
+        int m = matrix.length;
+        if (m == 0)
+            return 0;
+        int n = matrix[0].length;
+        int max = 0;
+        for (int i = 0; i < m; i++) { 
+            for (int j = 0; j < n; j++) {
+                if (matrix[i][j] == '0')
+                    continue;
+                int x = 1;
+                while (i + x < m && matrix[i + x][j] == '1')
+                    x++;
+                int y = 1;
+                while (j + y < n && matrix[i][j + y] == '1')
+                    y++;
+                int sideLen = x < y? x:y;
+                x = y = 1;
+                for (; x < sideLen; x++) {
+                    for (y = 1; y < sideLen; y++) {
+                        if (matrix[i + x][j + y] == '0') {
+                            // 边长如何调整
+                            sideLen = y;
+                            x--;
+                            break;
+                        }
+                    }
+                }                
+                int area = sideLen * sideLen;
+                max = max > area? max:area;
+            }
+        }
+        return max;
+    }
+}
