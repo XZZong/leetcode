@@ -1,0 +1,22 @@
+public List<List<Integer>> threeSum(int[] num) {
+    // 先将整个数组排序，整个问题的求解会简单些
+    Arrays.sort(num);
+    List<List<Integer>> res = new LinkedList<>(); 
+    for (int i = 0; i < num.length-2; i++) {
+        // 跳过相同的数
+        if (i == 0 || (i > 0 && num[i] != num[i-1])) {
+            // 下面就是一个2sum的过程：在从i+1开始的有序数组中，寻找target为0-num[i]的两个数
+            int lo = i+1, hi = num.length-1, sum = 0 - num[i];
+            while (lo < hi) {
+                if (num[lo] + num[hi] == sum) {
+                    res.add(Arrays.asList(num[i], num[lo], num[hi]));
+                    while (lo < hi && num[lo] == num[lo+1]) lo++;
+                    while (lo < hi && num[hi] == num[hi-1]) hi--;
+                    lo++; hi--;
+                } else if (num[lo] + num[hi] < sum) lo++;
+                else hi--;
+           }
+        }
+    }
+    return res;
+}
