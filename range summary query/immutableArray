@@ -1,0 +1,17 @@
+public class NumArray {
+    int[] nums;
+
+    public NumArray(int[] nums) {
+        for(int i = 1; i < nums.length; i++)
+            nums[i] += nums[i - 1];   //现在数组中的第i个元素的值为原数组前i项的总和
+
+        this.nums = nums;
+    }
+
+    public int sumRange(int i, int j) { //使用一个减法计算就可以得到第i到j项的和，计算非常快
+        if(i == 0)
+            return nums[j];
+
+        return nums[j] - nums[i - 1];
+    }
+}
