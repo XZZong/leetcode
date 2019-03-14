@@ -1,0 +1,31 @@
+def fourSum(self, nums, target):
+    # 寻找和为target的N个数
+    def findNsum(l, r, target, N, result, results):
+        # r - l + 1 < N : 数组的长度比N小，不可能找到这样的N个数
+        # N < 2 : 
+        # target < nums[l] * N : 目标比最小数的N倍小，那么从l到r里寻找N个数，必然超过target
+        # target > nums[r] * N : 目标比最大数的N倍大，那么从l到r里寻找N个数，必然到不了target
+        # 将这些提前结束掉，减少循环查找的次数
+        if r-l+1 < N or N < 2 or target < nums[l]*N or target > nums[r]*N:  # early termination
+            return
+        if N == 2: # two pointers solve sorted 2-sum problem
+            while l < r:
+                s = nums[l] + nums[r]
+                if s == target:
+                    results.append(result + [nums[l], nums[r]])
+                    l += 1
+                    while l < r and nums[l] == nums[l-1]:
+                        l += 1
+                elif s < target:
+                    l += 1
+                else:
+                    r -= 1
+        else: # recursively reduce N
+            for i in range(l, r+1):
+                if i == l or (i > l and nums[i-1] != nums[i]):
+                    findNsum(i+1, r, target-nums[i], N-1, result+[nums[i]], results)
+
+    nums.sort()
+    results = []
+    findNsum(0, len(nums)-1, target, 4, [], results)
+    return results
