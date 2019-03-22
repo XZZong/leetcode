@@ -1,0 +1,30 @@
+public String longestPalindrome(String s) {
+    StringBuilder sb = new StringBuilder(s);
+    sb.insert(0,"$");
+    int i;
+    
+    // 在原字符串的每两个字母之间添加一个“#”，这样不需要进行奇偶的分类讨论
+    for(i= 0; i <= s.length(); i++)
+        sb.insert(i * 2 + 1,"#");
+    
+    i = 1;
+    // pa为当前最有中心，w为最大回文子串长度的一半
+    int pa = 0, w = 0;
+    // 用来记录以i为中心的回文子串的长度
+    int[] p = new int[sb.length()];
+    while (i < sb.length()) {
+        if(i > pa + w - 1)
+            p[i] = 1;
+        else
+            p[i] = p[2 * pa - i] > pa + w - 1 - i ? pa + w - i : p[2 * pa - i];
+        while(i + p[i] < sb.length() && sb.charAt(i - p[i]) == sb.charAt(i + p[i]))
+            p[i]++;
+        if(p[i] > w) {
+            pa = i;
+            w = p[i];
+        }
+        i++;
+    }
+    String result = s.substring((pa - w) / 2, (pa - w) / 2 + w - 1);
+    return result;
+}
