@@ -22,3 +22,11 @@
         5 x x x x x                5 x x x x x |           5 x x x x x |
         6 x x x x x x              6 x x x x x x           6 x x x x x x         
 ```
+### trapping rain water
+#### 问题描述
+给你一个由非负数构成的数组，数组中的每一个数表示坐标系中宽度为1高为该数的墙。计算可以容纳多少体积的水。
+![picture](https://assets.leetcode.com/uploads/2018/10/22/rainwatertrap.png)
+
+#### 解题思路
+分别找到左边和右边的最大高度，并将它们记录下来。处理最大高度小的那边：累加。（我感觉自己说不清，结合一些图进行说明会更清楚吗？下面是别人自己的解释）
+Search from left to right and maintain a max height of left and right separately, which is like a one-side wall of partial container. Fix the higher one and flow water from the lower part. For example, if current height of left is lower, we fill water in the left bin. Until left meets right, we filled the whole container.
