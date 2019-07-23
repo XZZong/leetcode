@@ -1,0 +1,29 @@
+public ListNode reverseKGroup(ListNode head, int k) {
+    if (head == null || k <= 1)
+        return head;
+    ListNode temp = head;
+    int count = 0;
+    while (temp != null) {
+        temp = temp.next;
+        count += 1;
+    }
+    if (count < k)
+        return head;
+    ListNode newHead = new ListNode(0);
+    newHead.next = head;
+    ListNode ll = newHead;
+    for (int i = 0; i < count / k; i++) {
+        temp = head;
+        ListNode p = head;
+        for (int j = 0; j < k; j++) {
+            p = temp.next;
+            temp.next = newHead.next;
+            newHead.next = temp;
+            temp = p;
+        } 
+        newHead = head;
+        head.next = p;
+        head = p;            
+    }
+    return ll.next;
+}
